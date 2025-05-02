@@ -1,4 +1,10 @@
-# Pixel License System
+# FiveM discord License System
+
+A secure license management system for your server. Easily manage and verify server licenses for your online applications.
+
+## Keywords
+license management, server license, license validation, secure license system, server tools, online verification
+
 
 ## Description / Açıklama
 
