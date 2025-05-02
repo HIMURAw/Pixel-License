@@ -3,7 +3,7 @@ const { SlashCommandBuilder, EmbedBuilder } = require('@discordjs/builders');
 
 module.exports = {
     data: new SlashCommandBuilder()
-        .setName('addlicense')
+        .setName('addlicenses')
         .setDescription('Adds a license with an IP address and username')
         .addStringOption(option => 
             option.setName('ip')

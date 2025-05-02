@@ -2,16 +2,16 @@ const mysql = require('mysql2');
 
 const db = mysql.createConnection({
     host: 'localhost',
-    user: 'root', // Databasenin kullanıcı adı
-    password: '', // Databasenin şifresi
-    database: 'licensedb' // Veritabanı adı
+    user: 'root', // Database username
+    password: '', // Database password
+    database: 'licensedb' // Database name
 });
 
 db.connect((err) => {
     if (err) {
-        console.error('Veritabanına bağlanılamadı:', err);
+        console.error('Failed to connect to the database:', err);
     } else {
-        console.log('Veritabanına başarıyla bağlanıldı!');
+        console.log('Successfully connected to the database!');
     }
 });
 
