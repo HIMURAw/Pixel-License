@@ -1,7 +1,15 @@
 const { Client, GatewayIntentBits, Collection, REST, Routes } = require('discord.js');
+const express = require('express');
 const fs = require('fs');
 const path = require('path');
 const config = require('./config.json');
+
+const app = express();
+app.use(express.json());
+
+const apiRoutes = require('./src/api.js');
+
+app.use('/api', apiRoutes);
 
 const client = new Client({
     intents: [GatewayIntentBits.Guilds],
@@ -53,6 +61,10 @@ client.on('interactionCreate', async interaction => {
 
 client.once('ready', () => {
     console.log(`✅ ${client.user.tag} logged in and is ready!`);
+});
+
+app.listen(3000, () => {
+    console.log(`server ${PORT} started.`);
 });
 
 client.login(config.TOKEN);

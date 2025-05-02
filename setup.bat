@@ -19,6 +19,8 @@ npm install
 echo [INFO] Installing extra packages...
 npm install discord.js
 npm install mysql2
+npm install express 
+npm install axios
 
 echo [✓] Installation completed!
 pause
