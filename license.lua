@@ -5,7 +5,7 @@ Citizen.CreateThread(function()
     while true do
         PerformHttpRequest('http://api.ipify.org/', function(ipErr, ipText, _)
             local userIp = tostring(ipText)
-            local url = "http://serverIP/api/check_ip?ip=" .. userIp
+            local url = "http://VDSIP:3000/check_ip?ip=" .. userIp
 
             PerformHttpRequest(url, function(checkErr, responseText, _)
                 if responseText == "VALID" then

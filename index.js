@@ -71,7 +71,7 @@ app.get("/check_ip", (req, res) => {
         return res.status(400).send("INVALID");
     }
 
-    db.query("SELECT * FROM licenseDB WHERE ip_address = ?", [ip], (err, result) => {
+    db.query("SELECT * FROM licenses WHERE ip_address = ?", [ip], (err, result) => {
         if (err) {
             console.error(err);
             sendToDiscord(`⚠️ Database error: ${err.message}`);
