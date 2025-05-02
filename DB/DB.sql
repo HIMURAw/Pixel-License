@@ -1,0 +1,10 @@
+CREATE DATABASE licenseDB;
+
+USE licenseDB;
+
+CREATE TABLE licenses (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    ip_address VARCHAR(255) NOT NULL,
+    servername VARCHAR(255) NOT NULL,
+    added_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
