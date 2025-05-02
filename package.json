@@ -17,6 +17,7 @@
   },
   "homepage": "https://github.com/HIMURAw/Pixel-License#readme",
   "dependencies": {
+    "discord.js": "^14.19.2",
     "node-module": "^1.0.1"
   }
 }
