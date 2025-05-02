@@ -20,6 +20,7 @@
     "axios": "^1.9.0",
     "discord.js": "^14.19.2",
     "express": "^5.1.0",
+    "mysql2": "^3.14.1",
     "node-module": "^1.0.1"
   }
 }

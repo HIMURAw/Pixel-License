@@ -1,15 +1,14 @@
 const { Client, GatewayIntentBits, Collection, REST, Routes } = require('discord.js');
 const express = require('express');
+const axios = require('axios');
 const fs = require('fs');
 const path = require('path');
 const config = require('./config.json');
+const db = require('./DB/dbconnection.js')
+const PORT = 3000;
 
 const app = express();
 app.use(express.json());
-
-const apiRoutes = require('./src/api.js');
-
-app.use('/api', apiRoutes);
 
 const client = new Client({
     intents: [GatewayIntentBits.Guilds],
@@ -63,8 +62,64 @@ client.once('ready', () => {
     console.log(`✅ ${client.user.tag} logged in and is ready!`);
 });
 
-app.listen(3000, () => {
-    console.log(`server ${PORT} started.`);
+
+app.get("/check_ip", (req, res) => {
+    const { ip } = req.query;
+
+    if (!ip) {
+        sendToDiscord("❌ IP could not be obtained or was sent incomplete.");
+        return res.status(400).send("INVALID");
+    }
+
+    db.query("SELECT * FROM licenseDB WHERE ip_address = ?", [ip], (err, result) => {
+        if (err) {
+            console.error(err);
+            sendToDiscord(`⚠️ Database error: ${err.message}`);
+            return res.status(500).send("ERROR");
+        }
+
+        if (result.length > 0) {
+            sendToDiscord(`✅ Licensed IP verified: \`${ip}\``);
+            return res.send("VALID");
+        } else {
+            sendToDiscord(`❌ Invalid licensed IP attempt: \`${ip}\``);
+            return res.send("INVALID");
+        }
+    });
+});
+
+function sendToDiscord(title, ip, userAgent, host, status) {
+    const colorMap = {
+        VALID: 0x00ff00,
+        INVALID: 0xff0000,
+        ERROR: 0xffff00
+    };
+
+    const embed = {
+        title: title,
+        color: colorMap[status] || 0x3498db,
+        fields: [
+            { name: "IP Address", value: ip || "Unknown", inline: false },
+            { name: "User Agent", value: userAgent || "Unknown", inline: false },
+            { name: "Host", value: host || "Unknown", inline: false },
+        ],
+        timestamp: new Date(),
+        footer: {
+            text: "Pixel Web License System",
+        },
+    };
+
+    axios.post(config.LICANCE_WEBHOOK, {
+        embeds: [embed],
+    }).catch(err => {
+        console.error("Discord Webhook Error:", err.message);
+    });
+}
+
+
+
+app.listen(PORT, () => {
+    console.log(`Server started on port ${PORT}.`);
 });
 
 client.login(config.TOKEN);

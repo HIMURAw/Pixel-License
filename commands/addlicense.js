@@ -1,19 +1,19 @@
-const db = require('../src/dbconnection.js');
+const db = require('../DB/dbconnection.js');
 const { SlashCommandBuilder, EmbedBuilder } = require('@discordjs/builders');
 
 module.exports = {
     data: new SlashCommandBuilder()
         .setName('addlicenses')
         .setDescription('Adds a license with an IP address and username')
-        .addStringOption(option => 
+        .addStringOption(option =>
             option.setName('ip')
                 .setDescription('IP address for the license')
                 .setRequired(true))
-        .addStringOption(option => 
+        .addStringOption(option =>
             option.setName('servername')
                 .setDescription('Username for the license')
                 .setRequired(true)),
-    
+
     async execute(interaction) {
         const ipAddress = interaction.options.getString('ip');
         const servername = interaction.options.getString('servername');

@@ -1,4 +1,4 @@
-const db = require('../src/dbconnection.js');
+const db = require('../DB/dbconnection.js');
 const { SlashCommandBuilder, EmbedBuilder } = require('@discordjs/builders');
 
 module.exports = {
