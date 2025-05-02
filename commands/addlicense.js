@@ -3,15 +3,15 @@ const { SlashCommandBuilder, EmbedBuilder } = require('@discordjs/builders');
 
 module.exports = {
     data: new SlashCommandBuilder()
-        .setName('lisansekle')
-        .setDescription('Bir IP adresi ve kullanıcı adı ile lisans ekler')
+        .setName('addlicense')
+        .setDescription('Adds a license with an IP address and username')
         .addStringOption(option => 
             option.setName('ip')
-                .setDescription('Lisansın ekleneceği IP adresi')
+                .setDescription('IP address for the license')
                 .setRequired(true))
         .addStringOption(option => 
             option.setName('servername')
-                .setDescription('Lisansın ekleneceği kullanıcı adı')
+                .setDescription('Username for the license')
                 .setRequired(true)),
     
     async execute(interaction) {
@@ -21,26 +21,26 @@ module.exports = {
         const query = 'INSERT INTO licenses (ip_address, servername) VALUES (?, ?)';
         db.query(query, [ipAddress, servername], (err, results) => {
             if (err) {
-                console.error('Veri eklerken hata oluştu:', err);
+                console.error('Error occurred while adding data:', err);
                 return interaction.reply({
-                    content: 'Veri eklenirken bir hata oluştu!',
+                    content: 'An error occurred while adding the data!',
                     ephemeral: true
                 });
             }
 
             const embed = new EmbedBuilder()
-                .setColor(0x00FF00) // Yeşil renk
-                .setTitle('Lisans Eklendi!')
-                .setDescription(`Başarıyla lisans eklendi!`)
+                .setColor(0x00FF00) // Green color
+                .setTitle('License Added!')
+                .setDescription(`License has been successfully added!`)
                 .addFields(
-                    { name: 'IP Adresi', value: ipAddress, inline: true },
-                    { name: 'Sunucu İsmi', value: servername, inline: true }
+                    { name: 'IP Address', value: ipAddress, inline: true },
+                    { name: 'Server Name', value: servername, inline: true }
                 )
-                .setFooter({ text: 'Lisans Sistemi' })
+                .setFooter({ text: 'License System' })
                 .setTimestamp();
 
             interaction.reply({
-                content: `Başarıyla eklendi: IP: ${ipAddress}, Server: ${servername}`,
+                content: `Successfully added: IP: ${ipAddress}, Server: ${servername}`,
                 embeds: [embed]
             });
         });

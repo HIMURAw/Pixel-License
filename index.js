@@ -10,7 +10,7 @@ const client = new Client({
 client.commands = new Collection();
 const commands = [];
 
-const commandsPath = path.join(__dirname, 'commands');
+const commandsPath = path.join(__dirname, './commands');
 const commandFiles = fs.readdirSync(commandsPath).filter(file => file.endsWith('.js'));
 
 for (const file of commandFiles) {
@@ -19,21 +19,21 @@ for (const file of commandFiles) {
         client.commands.set(command.data.name, command);
         commands.push(command.data.toJSON());
     } else {
-        console.warn(`[UYARI] '${file}' geçerli bir komut değil.`);
+        console.warn(`[WARNING] '${file}' is not a valid command.`);
     }
 }
 
 const rest = new REST({ version: '10' }).setToken(config.TOKEN);
 (async () => {
     try {
-        console.log('Slash komutları yükleniyor...');
+        console.log('Loading slash commands...');
         await rest.put(
             Routes.applicationCommands(config.CLIENT_ID),
             { body: commands },
         );
-        console.log('Komutlar başarıyla yüklendi!');
+        console.log('Commands successfully loaded!');
     } catch (error) {
-        console.error('Komutları yüklerken hata:', error);
+        console.error('Error loading commands:', error);
     }
 })();
 
@@ -47,12 +47,12 @@ client.on('interactionCreate', async interaction => {
         await command.execute(interaction);
     } catch (error) {
         console.error(error);
-        await interaction.reply({ content: 'Komut çalıştırılırken bir hata oluştu.', ephemeral: true });
+        await interaction.reply({ content: 'An error occurred while executing the command.', ephemeral: true });
     }
 });
 
 client.once('ready', () => {
-    console.log(`✅ ${client.user.tag} giriş yaptı ve hazır!`);
+    console.log(`✅ ${client.user.tag} logged in and is ready!`);
 });
 
 client.login(config.TOKEN);
